@@ -16,7 +16,7 @@ class DataSourceConnection(object):
     __instance = None
 
     class DataSourceConnectionImpl:  
-        def __init__(self):
+        def __call__(self):
             return self  
         
     def __init__(self, ConnectionProperties):
@@ -28,31 +28,31 @@ class DataSourceConnection(object):
         self.__dict__['DataSourceConnection__instance'] = DataSourceConnection.__instance
         
         self.properties = {}
-        self.properties = ConnectionProperties.ConnectionProperties
+        self.properties = ConnectionProperties
 
-    def getConnection(self):
+    def getConnectionPool(self):
         KSInfo = self.properties.getConnectionInfo()
         ringInfo = self.properties.getRingInfo()
         
         connInfo = dict(KSInfo.items() + ringInfo.items())
         
-        listcount = 0
         nodelist = []
         
         for key in connInfo.keys():
             
             keyspace = connInfo.get("keyspace")
-            column_family = connInfo("column_family")
+            #column_family = connInfo.get("column_family")
             
-            if re.search('node', connInfo.get(key)):
+            print 'about to look for nodes'
+            
+            if re.search('node*', key):
+                print connInfo.get(key)
+                nodelist.append(connInfo.get(key))
                 
-                nodelist[listcount] = connInfo.get(key)
-                listcount = listcount + 1
         
         
         pool = ConnectionPool(keyspace, nodelist)
         
-        return pool 
-             
+        return pool
         
         

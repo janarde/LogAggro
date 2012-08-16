@@ -12,7 +12,7 @@ class Test(unittest.TestCase):
 
     def setUp(self):
         
-        self.propertyfile = 'C:\workspace\python_learning\\resources\HandsetLogAgg.properties'
+        self.propertyfile = 'C:\Users\Jesse_Anarde\git\LogAggro\LogAggro\\resources\HandsetLogAgg.properties'
         self.connProps = ConnectionProperties.ConnectionProperties(self.propertyfile)
 
 
