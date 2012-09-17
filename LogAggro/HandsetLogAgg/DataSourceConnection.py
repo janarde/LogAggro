@@ -4,7 +4,6 @@ Created on Aug 1, 2012
 @author: Jesse_Anarde
 '''
 
-from HandsetLogAgg import ConnectionProperties
 import re
 from pycassa.pool import ConnectionPool
 from pycassa.columnfamily import ColumnFamily
