@@ -4,7 +4,7 @@ Created on Aug 1, 2012
 @author: Jesse_Anarde
 '''
 
-import ConnectionProperties
+from HandsetLogAgg import ConnectionProperties
 import re
 from pycassa.pool import ConnectionPool
 from pycassa.columnfamily import ColumnFamily
@@ -29,30 +29,33 @@ class DataSourceConnection(object):
         
         self.properties = {}
         self.properties = ConnectionProperties
-
-    def getConnectionPool(self):
         KSInfo = self.properties.getConnectionInfo()
         ringInfo = self.properties.getRingInfo()
         
         connInfo = dict(KSInfo.items() + ringInfo.items())
         
-        nodelist = []
+        self.nodelist = []
         
         for key in connInfo.keys():
             
-            keyspace = connInfo.get("keyspace")
-            #column_family = connInfo.get("column_family")
+            self.keyspace = connInfo.get("keyspace")
+            self.column_family = connInfo.get("column_family")
             
             print 'about to look for nodes'
             
             if re.search('node*', key):
                 print connInfo.get(key)
-                nodelist.append(connInfo.get(key))
+                self.nodelist.append(connInfo.get(key))
                 
+
+    def getConnectionPool(self):        
         
-        
-        pool = ConnectionPool(keyspace, nodelist)
+        pool = ConnectionPool(self.keyspace, self.nodelist)
         
         return pool
+    
+    def getColumnFamily(self):
+        col_fam = ColumnFamily(self.getConnectionPool(), self.column_family)
         
+        return col_fam
         

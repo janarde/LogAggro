@@ -21,10 +21,15 @@ class Test(unittest.TestCase):
         pass
 
 
-    def test_get_connection(self):
+    def test_get_connection_pool(self):
         
         pool = self.ds.getConnectionPool()
         self.assertNotEqual(pool, '')
+    
+    
+    def test_get_column_family(self):
+        cf = self.ds.getColumnFamily()
+        self.assertNotEqual(cf, '')
 
 
 if __name__ == "__main__":
