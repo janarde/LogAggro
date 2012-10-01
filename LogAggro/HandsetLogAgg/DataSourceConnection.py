@@ -5,6 +5,7 @@ Created on Aug 1, 2012
 '''
 
 import re
+import sys
 from pycassa.pool import ConnectionPool
 from pycassa.columnfamily import ColumnFamily
 
@@ -49,12 +50,20 @@ class DataSourceConnection(object):
 
     def getConnectionPool(self):        
         
-        pool = ConnectionPool(self.keyspace, self.nodelist)
+        try:
+            
+            pool = ConnectionPool(self.keyspace, self.nodelist)
+            return pool
+        except:
+            e = sys.exc_info()[0]
+            print e
+            
         
-        return pool
     
     def getColumnFamily(self):
         col_fam = ColumnFamily(self.getConnectionPool(), self.column_family)
         
         return col_fam
+    
+    
         
